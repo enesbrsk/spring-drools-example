@@ -1,0 +1,24 @@
+package com.example.drools.rules
+
+import com.example.drools.entitiy.Home
+
+rule "LowRiskHome"
+    when
+        home : Home( fireAlarmInstalled == true, numberOfFloors < 3, sprinklerInstalled == true )
+    then
+        home.setPolicyPrice(500);
+end
+
+rule "MediumRiskHome"
+    when
+        home : Home( fireAlarmInstalled == true, numberOfFloors > 2, numberOfFloors < 5, sprinklerInstalled == true )
+    then
+        home.setPolicyPrice(1000);
+end
+
+rule "HighRiskHome"
+    when
+        home : Home( fireAlarmInstalled == false, numberOfFloors > 4, sprinklerInstalled == false )
+    then
+        home.setPolicyPrice(2000);
+end
