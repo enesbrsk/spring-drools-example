@@ -2,23 +2,24 @@ package com.example.drools.rules
 
 import com.example.drools.entitiy.Home
 
-rule "LowRiskHome"
+rule "LowRiskHome2"
     when
         home : Home( fireAlarmInstalled == true, numberOfFloors < 3, sprinklerInstalled == true )
     then
-        System.out.println("Hoş geldiniz !");
-        home.setPolicyPrice(500 + home.getPolicyPrice());
+        System.out.println("Hoş geldiniz22 !");
+        home.setPolicyPrice(113231 + home.getPolicyPrice());
 end
-rule "MediumRiskHome"
+
+rule "MediumRiskHome2"
     when
         home : Home( fireAlarmInstalled == true, numberOfFloors > 2, numberOfFloors < 5, sprinklerInstalled == true )
     then
-        home.setPolicyPrice(1000);
+        home.setPolicyPrice(22);
 end
 
-rule "HighRiskHome"
+rule "HighRiskHome2"
     when
         home : Home( fireAlarmInstalled == false, numberOfFloors > 4, sprinklerInstalled == false )
     then
-        home.setPolicyPrice(2000);
+        home.setPolicyPrice(33);
 end

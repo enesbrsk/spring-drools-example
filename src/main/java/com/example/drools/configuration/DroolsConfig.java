@@ -16,14 +16,14 @@ import org.springframework.context.annotation.Configuration;
 public class DroolsConfig {
 
     private static final String RULES_CUSTOMER_RULES_DRL = "rules/risk.drl";
-
+    private static final String RULES_CUSTOMER_RULES2_DRL = "rules/risk2.drl";
 
     @Bean
     public KieContainer kieContainer() {
         KieServices kieServices = KieServices.Factory.get();
         KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
-        Resource resource = kieServices.getResources().newClassPathResource("rules/risk.drl");
-        kieFileSystem.write(resource);
+        kieFileSystem.write(ResourceFactory.newClassPathResource(RULES_CUSTOMER_RULES_DRL));
+        kieFileSystem.write(ResourceFactory.newClassPathResource(RULES_CUSTOMER_RULES2_DRL));
         KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);
         kieBuilder.buildAll();
         KieModule kieModule = kieBuilder.getKieModule();
