@@ -1,4 +1,4 @@
-package com.example.drools.entitiy;
+package com.example.drools.entity;
 
 import lombok.*;
 

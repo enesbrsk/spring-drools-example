@@ -1,6 +1,6 @@
 package com.example.drools.rules
 
-import com.example.drools.entitiy.Home
+import com.example.drools.entity.Home
 
 rule "LowRiskHome2"
     when

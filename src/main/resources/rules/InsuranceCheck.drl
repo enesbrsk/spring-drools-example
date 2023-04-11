@@ -1,0 +1,99 @@
+package com.example.drools.rules
+
+import com.example.drools.entity.InsurancePolicy;
+
+rule "CalculatePolicyPrice For A Segment"
+    when
+        policy: InsurancePolicy((brand == "BMW" || brand == "AUDI"))
+    then
+        policy.setPolicyPrice(10000 + policy.getPolicyPrice());
+end
+
+rule "CalculatePolicyPrice For B Segment"
+    when
+        policy: InsurancePolicy((brand == "RENAULT" || brand == "OPEL"))
+    then
+        policy.setPolicyPrice(5000 + policy.getPolicyPrice());
+end
+
+rule "CalculateRenaulClioPrice"
+    when
+        policy: InsurancePolicy(brand == "RENAULT", model == "CLIO")
+    then
+        policy.setPolicyPrice(100 + policy.getPolicyPrice());
+end
+
+rule "CalculateRenaultMeganePrice"
+    when
+        policy: InsurancePolicy(brand == "RENAULT", model == "MEGANE")
+    then
+        policy.setPolicyPrice(300 + policy.getPolicyPrice());
+end
+
+rule "CalculateASegementDiscount"
+    when
+        policy: InsurancePolicy((brand == "BMW" || brand == "AUDI"),carAge > 3)
+    then
+        int discountAmount = policy.getPolicyPrice() * 5 / 100;
+        policy.setPolicyPrice(policy.getPolicyPrice() - discountAmount);
+end
+
+rule "CalculateBSegmentDiscount"
+    when
+        policy: InsurancePolicy((brand == "RENAULT" || brand == "OPEL"),carAge > 3)
+    then
+        if (policy.getBrand().equals("RENAULT")) {
+            policy.setPolicyPrice(policy.getPolicyPrice() - (policy.getPolicyPrice() * 7 / 100));
+        } else if (policy.getBrand().equals("OPEL")) {
+            policy.setPolicyPrice(policy.getPolicyPrice() - (policy.getPolicyPrice() * 10 / 100));
+        }
+end
+
+rule "CalculateColorPrice"
+    when
+        policy: InsurancePolicy(color == "RED")
+    then
+            policy.setPolicyPrice(policy.getPolicyPrice() + (policy.getPolicyPrice() * 1 / 100));
+end
+
+rule "CalculateAgeRiskFactorYoung"
+    when
+        policy: InsurancePolicy(age >= 2, age <= 28)
+    then
+        policy.setPolicyPrice(policy.getPolicyPrice() + (policy.getPolicyPrice() * 12 / 100));
+end
+
+rule "CalculateAgeRiskFactorOld"
+    when
+        policy: InsurancePolicy(age >= 28, age <= 40)
+    then
+        policy.setPolicyPrice(policy.getPolicyPrice() + (policy.getPolicyPrice() * 9 / 100));
+end
+
+rule "CalculateinsuranceTimeDiscount"
+    when
+        policy: InsurancePolicy( insuranceTime > 10, hasAccident == false )
+    then
+        policy.setPolicyPrice(policy.getPolicyPrice() - (policy.getPolicyPrice() * 8 / 100));
+end
+
+rule "LessThan10YearsOfUsageAndNoDamage"
+    when
+        policy: InsurancePolicy( insuranceTime > 3, insuranceTime <= 5, hasAccident == false )
+    then
+        policy.setPolicyPrice(policy.getPolicyPrice() - (policy.getPolicyPrice() * 10 / 100));
+end
+
+rule "MoreThan5YearsOfUsageAndNoDamage"
+    when
+        policy: InsurancePolicy( insuranceTime > 5, hasAccident == false )
+    then
+        policy.setPolicyPrice(policy.getPolicyPrice() - (policy.getPolicyPrice() * 15 / 100));
+end
+
+rule "CalculateIsDamage"
+    when
+        policy: InsurancePolicy(hasAccident == true)
+    then
+        policy.setPolicyPrice(policy.getPolicyPrice() + (policy.getPolicyPrice() * 12 / 100));
+end

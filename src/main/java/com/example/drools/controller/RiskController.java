@@ -1,6 +1,6 @@
 package com.example.drools.controller;
 
-import com.example.drools.entitiy.Home;
+import com.example.drools.entity.Home;
 import com.example.drools.model.HomeRequest;
 import com.example.drools.service.RiskService;
 import org.springframework.web.bind.annotation.PostMapping;
