@@ -18,9 +18,14 @@ public class RiskController {
         this.riskService = riskService;
     }
 
-    @PostMapping("/evaluate")
-    public Home evaluateHome(@RequestBody HomeRequest homeRequest){
-        Home evaluatedHome = riskService.evaluate(homeRequest);
+    @PostMapping("/evaluate/drools")
+    public Home evaluateHomeWithDrools(@RequestBody HomeRequest homeRequest){
+        Home evaluatedHome = riskService.evaluateWithDrools(homeRequest);
+        return evaluatedHome;
+    }
+    @PostMapping("/evaluate/java")
+    public Home evaluateHomeWithJava(@RequestBody HomeRequest homeRequest){
+        Home evaluatedHome = riskService.evaluateWithDrools(homeRequest);
         return evaluatedHome;
     }
 }

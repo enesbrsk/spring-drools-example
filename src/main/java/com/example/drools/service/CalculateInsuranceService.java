@@ -32,8 +32,6 @@ public class CalculateInsuranceService {
         kieSessionRisk1.fireAllRules();
         kieSessionRisk1.dispose();
 
-
-
         return insurancePolicy;
     }
 

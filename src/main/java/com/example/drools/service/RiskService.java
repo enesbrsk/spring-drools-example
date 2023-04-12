@@ -22,19 +22,35 @@ public class RiskService {
         this.kieContainer = kieContainer;
     }
 
-    public Home evaluate(HomeRequest homeRequest) {
+    public Home evaluateWithCore(HomeRequest homeRequest){
         Home home = convertToHome(homeRequest);
 
-        home = multiEva(home);
+        for(int i=0;i<50;i++) {
+            if (home.isFireAlarmInstalled() && home.getNumberOfFloors() < 3 && home.isSprinklerInstalled()) {
+                System.out.println("Hoş geldiniz !");
+                home.setPolicyPrice(500 + home.getPolicyPrice());
+            } else if (home.isFireAlarmInstalled() && home.getNumberOfFloors() > 2 && home.getNumberOfFloors() < 5 && home.isSprinklerInstalled()) {
+                home.setPolicyPrice(1000);
+            } else if (!home.isFireAlarmInstalled() && home.getNumberOfFloors() > 4 && !home.isSprinklerInstalled()) {
+                home.setPolicyPrice(2000);
+            }
+        }
+        return home;
+    }
+
+    public Home evaluateWithDrools(HomeRequest homeRequest) {
+
+
+        Home home = convertToHome(homeRequest);
+
         KieServices kieServices = KieServices.Factory.get();
         KieContainer kieContainerRisk1 = createKieContainer(kieServices, "rules/risk.drl");
-        KieSession kieSessionRisk1 = kieContainerRisk1.newKieSession();
-        kieSessionRisk1.insert(home);
-        kieSessionRisk1.fireAllRules();
-        kieSessionRisk1.dispose();
-
-
-
+        for(int i=0;i<50;i++){
+            KieSession kieSessionRisk1 = kieContainerRisk1.newKieSession();
+            kieSessionRisk1.insert(home);
+            kieSessionRisk1.fireAllRules();
+            kieSessionRisk1.dispose();
+        }
         return home;
     }
 

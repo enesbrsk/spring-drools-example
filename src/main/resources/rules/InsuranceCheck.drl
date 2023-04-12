@@ -10,6 +10,7 @@ rule "CalculatePolicyPrice For A Segment"
 end
 
 rule "CalculatePolicyPrice For B Segment"
+
     when
         policy: InsurancePolicy((brand == "RENAULT" || brand == "OPEL"))
     then
@@ -17,18 +18,18 @@ rule "CalculatePolicyPrice For B Segment"
 end
 
 rule "CalculateRenaulClioPrice"
-    when
-        policy: InsurancePolicy(brand == "RENAULT", model == "CLIO")
-    then
-        policy.setPolicyPrice(100 + policy.getPolicyPrice());
-end
+       when
+           policy: InsurancePolicy(brand == "RENAULT", model == "CLIO")
+       then
+           policy.setPolicyPrice(100 + policy.getPolicyPrice());
+   end
 
-rule "CalculateRenaultMeganePrice"
-    when
-        policy: InsurancePolicy(brand == "RENAULT", model == "MEGANE")
-    then
-        policy.setPolicyPrice(300 + policy.getPolicyPrice());
-end
+   rule "CalculateRenaultMeganePrice"
+       when
+           policy: InsurancePolicy(brand == "RENAULT", model == "MEGANE")
+       then
+           policy.setPolicyPrice(300 + policy.getPolicyPrice());
+   end
 
 rule "CalculateASegementDiscount"
     when
@@ -53,7 +54,7 @@ rule "CalculateColorPrice"
     when
         policy: InsurancePolicy(color == "RED")
     then
-            policy.setPolicyPrice(policy.getPolicyPrice() + (policy.getPolicyPrice() * 1 / 100));
+        policy.setPolicyPrice(policy.getPolicyPrice() + (policy.getPolicyPrice() * 1 / 100));
 end
 
 rule "CalculateAgeRiskFactorYoung"
