@@ -15,15 +15,14 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan("com.example.drools.service")
 public class DroolsConfig {
 
-    private static final String RULES_CUSTOMER_RULES_DRL = "rules/risk.drl";
-    private static final String RULES_CUSTOMER_RULES2_DRL = "rules/risk2.drl";
+    private static final String RULES_CUSTOMER_RULES_DRL = "rules/InsuranceCheck.drl";
 
     @Bean
     public KieContainer kieContainer() {
         KieServices kieServices = KieServices.Factory.get();
         KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
-        kieFileSystem.write(ResourceFactory.newClassPathResource(RULES_CUSTOMER_RULES_DRL));
-        kieFileSystem.write(ResourceFactory.newClassPathResource(RULES_CUSTOMER_RULES2_DRL));
+        Resource resource = kieServices.getResources().newClassPathResource("rules/InsuranceCheck.drl");
+        kieFileSystem.write(resource);
         KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);
         kieBuilder.buildAll();
         KieModule kieModule = kieBuilder.getKieModule();

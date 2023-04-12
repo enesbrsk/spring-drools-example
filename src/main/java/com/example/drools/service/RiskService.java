@@ -25,9 +25,8 @@ public class RiskService {
     public Home evaluateWithCore(HomeRequest homeRequest){
         Home home = convertToHome(homeRequest);
 
-        for(int i=0;i<50;i++) {
+        for(int i=0;i<1000;i++) {
             if (home.isFireAlarmInstalled() && home.getNumberOfFloors() < 3 && home.isSprinklerInstalled()) {
-                System.out.println("Hoş geldiniz !");
                 home.setPolicyPrice(500 + home.getPolicyPrice());
             } else if (home.isFireAlarmInstalled() && home.getNumberOfFloors() > 2 && home.getNumberOfFloors() < 5 && home.isSprinklerInstalled()) {
                 home.setPolicyPrice(1000);
@@ -39,20 +38,19 @@ public class RiskService {
     }
 
     public Home evaluateWithDrools(HomeRequest homeRequest) {
-
-
         Home home = convertToHome(homeRequest);
-
         KieServices kieServices = KieServices.Factory.get();
         KieContainer kieContainerRisk1 = createKieContainer(kieServices, "rules/risk.drl");
-        for(int i=0;i<50;i++){
-            KieSession kieSessionRisk1 = kieContainerRisk1.newKieSession();
+        KieSession kieSessionRisk1;
+        for(int i=0; i<1000; i++){
+            kieSessionRisk1 = kieContainerRisk1.newKieSession();
             kieSessionRisk1.insert(home);
             kieSessionRisk1.fireAllRules();
             kieSessionRisk1.dispose();
         }
         return home;
     }
+
 
     private Home multiEva(Home home){
         KieServices kieServices = KieServices.Factory.get();

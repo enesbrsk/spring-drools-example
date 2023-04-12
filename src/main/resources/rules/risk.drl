@@ -6,7 +6,6 @@ rule "LowRiskHome"
     when
         home : Home( fireAlarmInstalled == true, numberOfFloors < 3, sprinklerInstalled == true )
     then
-        System.out.println("Hoş geldiniz !");
         home.setPolicyPrice(500 + home.getPolicyPrice());
 end
 rule "MediumRiskHome"
