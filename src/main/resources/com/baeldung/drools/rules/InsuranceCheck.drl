@@ -1,6 +1,10 @@
-package com.example.drools.rules
+package com.baeldung.drools.rules
 
 import com.example.drools.entity.InsurancePolicy;
+import com.example.drools.configuration.OutputDisplay;
+
+global OutputDisplay showResults;
+global OutputDisplay sh;
 
 rule "CalculatePolicyPrice For A Segment"
     when

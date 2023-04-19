@@ -1,15 +1,14 @@
 package com.example.drools.service;
 
+import com.example.drools.configuration.DroolsBeanFactory;
 import com.example.drools.entity.InsurancePolicy;
-import com.example.drools.model.HomeRequest;
 import org.junit.jupiter.api.Test;
+import org.kie.api.runtime.KieSession;
 import org.mockito.InjectMocks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.StopWatch;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class CalculateInsuranceServiceTest {

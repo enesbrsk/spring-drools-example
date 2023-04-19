@@ -1,8 +1,6 @@
 package com.example.drools.service;
 
-import com.example.drools.entity.Home;
 import com.example.drools.entity.InsurancePolicy;
-import com.example.drools.model.HomeRequest;
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieBuilder;
 import org.kie.api.builder.KieFileSystem;
@@ -26,7 +24,7 @@ public class CalculateInsuranceService {
     public InsurancePolicy getInsurance(InsurancePolicy insurancePolicy) {
 
         KieServices kieServices = KieServices.Factory.get();
-        KieContainer kieContainerRisk1 = createKieContainer(kieServices, "rules/InsuranceCheck.drl");
+        KieContainer kieContainerRisk1 = createKieContainer(kieServices, "com/baeldung/drools/rules/InsuranceCheck.drl");
         KieSession kieSessionRisk1 = kieContainerRisk1.newKieSession();
         kieSessionRisk1.insert(insurancePolicy);
         kieSessionRisk1.fireAllRules();
@@ -91,7 +89,7 @@ public class CalculateInsuranceService {
     }
 
 
-    private KieContainer createKieContainer(KieServices kieServices, String ruleFilePath) {
+    public KieContainer createKieContainer(KieServices kieServices, String ruleFilePath) {
         KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
         kieFileSystem.write(ResourceFactory.newClassPathResource(ruleFilePath));
         KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);

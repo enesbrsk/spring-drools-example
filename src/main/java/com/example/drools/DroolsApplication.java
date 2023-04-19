@@ -10,4 +10,5 @@ public class DroolsApplication {
 		SpringApplication.run(DroolsApplication.class, args);
 	}
 
+
 }
