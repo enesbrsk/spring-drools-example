@@ -15,44 +15,41 @@ import org.springframework.stereotype.Service;
 @Service
 public class RiskService {
 
-    private final KieContainer kieContainer;
+    private KieServices kieServices;
+    private KieContainer kieContainer;
 
-    @Autowired
-    public RiskService(KieContainer kieContainer) {
-        this.kieContainer = kieContainer;
+    public RiskService() {
+        kieServices = KieServices.Factory.get();
+        kieContainer = createKieContainer(kieServices, "rules/risk.drl");
     }
 
-    public Home evaluateWithCore(HomeRequest homeRequest){
+    public Home evaluateWithCore(HomeRequest homeRequest) {
         Home home = convertToHome(homeRequest);
 
-        for(int i=0;i<1000;i++) {
-            if (home.isFireAlarmInstalled() && home.getNumberOfFloors() < 3 && home.isSprinklerInstalled()) {
-                home.setPolicyPrice(500 + home.getPolicyPrice());
-            } else if (home.isFireAlarmInstalled() && home.getNumberOfFloors() > 2 && home.getNumberOfFloors() < 5 && home.isSprinklerInstalled()) {
-                home.setPolicyPrice(1000);
-            } else if (!home.isFireAlarmInstalled() && home.getNumberOfFloors() > 4 && !home.isSprinklerInstalled()) {
-                home.setPolicyPrice(2000);
-            }
+        if (home.isFireAlarmInstalled() && home.getNumberOfFloors() < 3 && home.isSprinklerInstalled()) {
+            home.setPolicyPrice(500 + home.getPolicyPrice());
+        } else if (home.isFireAlarmInstalled() && home.getNumberOfFloors() > 2 && home.getNumberOfFloors() < 5 && home.isSprinklerInstalled()) {
+            home.setPolicyPrice(1000);
+        } else if (!home.isFireAlarmInstalled() && home.getNumberOfFloors() > 4 && !home.isSprinklerInstalled()) {
+            home.setPolicyPrice(2000);
         }
+
         return home;
     }
 
     public Home evaluateWithDrools(HomeRequest homeRequest) {
         Home home = convertToHome(homeRequest);
-        KieServices kieServices = KieServices.Factory.get();
-        KieContainer kieContainerRisk1 = createKieContainer(kieServices, "rules/risk.drl");
-        KieSession kieSessionRisk1;
-        for(int i=0; i<1000; i++){
-            kieSessionRisk1 = kieContainerRisk1.newKieSession();
-            kieSessionRisk1.insert(home);
-            kieSessionRisk1.fireAllRules();
-            kieSessionRisk1.dispose();
-        }
+        KieSession kieSession = kieContainer.newKieSession();
+
+            kieSession.insert(home);
+            kieSession.fireAllRules();
+            kieSession.dispose();
+
         return home;
     }
 
 
-    private Home multiEva(Home home){
+    private Home multiEva(Home home) {
         KieServices kieServices = KieServices.Factory.get();
         KieContainer kieContainerRisk2 = createKieContainer(kieServices, "rules/risk2.drl");
         KieSession kieSessionRisk2 = kieContainerRisk2.newKieSession();
@@ -73,7 +70,7 @@ public class RiskService {
     }
 
 
-    private Home convertToHome(HomeRequest homeRequest){
+    private Home convertToHome(HomeRequest homeRequest) {
         Home home = new Home();
         home.setFireAlarmInstalled(homeRequest.isFireAlarmInstalled());
         home.setNumberOfFloors(homeRequest.getNumberOfFloors());
