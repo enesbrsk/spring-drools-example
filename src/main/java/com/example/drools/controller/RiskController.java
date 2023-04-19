@@ -28,9 +28,10 @@ public class RiskController {
     public Home evaluateHomeWithDrools(@RequestBody HomeRequest homeRequest){
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
+        logger.info("-----> Method executed for DROOLS in {} ms", stopWatch.getTotalTimeMillis());
+
         Home evaluatedHome = riskService.evaluateWithDrools(homeRequest);
         stopWatch.stop();
-        logger.info("-----> Method executed for DROOLS in {} ms", stopWatch.getTotalTimeMillis());
         return evaluatedHome;
     }
     @PostMapping("/evaluate/java")

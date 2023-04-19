@@ -14,14 +14,15 @@ public class CalculateInsuranceController {
         this.calculateInsuranceService = calculateInsuranceService;
     }
 
-    @GetMapping
-    public String hello(){
-        return "hello world";
+
+    @PostMapping("drools")
+    public InsurancePolicy getInsuranceWithDrools(@RequestBody InsurancePolicy insurancePolicy){
+        return calculateInsuranceService.getInsurance(insurancePolicy);
     }
 
-    @PostMapping
-    public InsurancePolicy getInsurance(@RequestBody InsurancePolicy insurancePolicy){
-        return calculateInsuranceService.getInsurance(insurancePolicy);
+    @PostMapping("java")
+    public InsurancePolicy getInsuranceWithJava(@RequestBody InsurancePolicy insurancePolicy){
+        return calculateInsuranceService.getInsuranceWithCoreJava(insurancePolicy);
     }
 
 }

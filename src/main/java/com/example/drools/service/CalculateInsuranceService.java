@@ -1,6 +1,7 @@
 package com.example.drools.service;
 
 import com.example.drools.entity.InsurancePolicy;
+import org.drools.core.common.InternalAgenda;
 import org.kie.api.KieServices;
 import org.kie.api.builder.KieBuilder;
 import org.kie.api.builder.KieFileSystem;
@@ -10,27 +11,35 @@ import org.kie.api.runtime.KieSession;
 import org.kie.internal.io.ResourceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
 @Service
 public class CalculateInsuranceService {
 
-    private final KieContainer kieContainer;
+    private KieServices kieServices ;
+    private KieContainer kieContainer ;
 
-    @Autowired
-    public CalculateInsuranceService(KieContainer kieContainer) {
-        this.kieContainer = kieContainer;
+    public CalculateInsuranceService() {
+        kieServices = KieServices.Factory.get();
+        kieContainer = createKieContainer(kieServices, "com/baeldung/drools/rules/InsuranceCheck.drl");
     }
 
     public InsurancePolicy getInsurance(InsurancePolicy insurancePolicy) {
-
-        KieServices kieServices = KieServices.Factory.get();
-        KieContainer kieContainerRisk1 = createKieContainer(kieServices, "com/baeldung/drools/rules/InsuranceCheck.drl");
-        KieSession kieSessionRisk1 = kieContainerRisk1.newKieSession();
-        kieSessionRisk1.insert(insurancePolicy);
-        kieSessionRisk1.fireAllRules();
-        kieSessionRisk1.dispose();
-        System.out.println(insurancePolicy.getPolicyPrice());
+        KieSession kieSession = kieContainer.newKieSession();
+        kieSession.insert(insurancePolicy);
+        kieSession.fireAllRules();
+        kieSession.dispose();
         return insurancePolicy;
+    }
+
+
+    public KieContainer createKieContainer(KieServices kieServices, String ruleFilePath) {
+        KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
+        kieFileSystem.write(ResourceFactory.newClassPathResource(ruleFilePath));
+        KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);
+        kieBuilder.buildAll();
+        KieModule kieModule = kieBuilder.getKieModule();
+        return kieServices.newKieContainer(kieModule.getReleaseId());
     }
 
     public InsurancePolicy getInsuranceWithCoreJava(InsurancePolicy policy) {
@@ -88,15 +97,6 @@ public class CalculateInsuranceService {
         return policy;
     }
 
-
-    public KieContainer createKieContainer(KieServices kieServices, String ruleFilePath) {
-        KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
-        kieFileSystem.write(ResourceFactory.newClassPathResource(ruleFilePath));
-        KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);
-        kieBuilder.buildAll();
-        KieModule kieModule = kieBuilder.getKieModule();
-        return kieServices.newKieContainer(kieModule.getReleaseId());
-    }
 
 
 }
