@@ -50,9 +50,9 @@ public class DroolsBeanFactory {
         getKieRepository();
         KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
 
-        kieFileSystem.write(ResourceFactory.newClassPathResource("com/baeldung/drools/rules/BackwardChaining.drl"));
-        kieFileSystem.write(ResourceFactory.newClassPathResource("com/baeldung/drools/rules/SuggestApplicant.drl"));
-        kieFileSystem.write(ResourceFactory.newClassPathResource("com/baeldung/drools/rules/InsuranceCheck.drl"));
+        kieFileSystem.write(ResourceFactory.newClassPathResource("rules/BackwardChaining.drl"));
+        kieFileSystem.write(ResourceFactory.newClassPathResource("rules/SuggestApplicant.drl"));
+        kieFileSystem.write(ResourceFactory.newClassPathResource("rules/InsuranceCheck.drl"));
 
         KieBuilder kb = kieServices.newKieBuilder(kieFileSystem);
         kb.buildAll();

@@ -8,9 +8,6 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.internal.io.ResourceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 
 
 public class DroolsConfig {
@@ -21,7 +18,7 @@ public class DroolsConfig {
     public KieContainer createKieContainer() {
         KieServices kieServices = KieServices.Factory.get();
         KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
-        kieFileSystem.write(ResourceFactory.newClassPathResource( "com/baeldung/drools/rules/InsuranceCheck.drl"));
+        kieFileSystem.write(ResourceFactory.newClassPathResource("rules/InsuranceCheck.drl"));
         KieBuilder kieBuilder = kieServices.newKieBuilder(kieFileSystem);
         kieBuilder.buildAll();
         KieModule kieModule = kieBuilder.getKieModule();

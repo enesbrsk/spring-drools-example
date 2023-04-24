@@ -1,0 +1,39 @@
+package com.baeldung.drools.rules
+
+import com.example.drools.entity.Person;
+
+rule "Kredi Verme Kuralı 1"
+    when
+        person : Person(
+            age >= 21,
+            age <= 65,
+            monthlyIncome >= 5000,
+            occupation in ("Engineer", "doctor", "lawyer"),
+            yearsOfExperience >= 3,
+            maritalStatus in ("Married", "single"),
+            numberOfChildren <= 1,
+            creditScore >= 700,
+            (residenceType in ("Apartment","rented", "owned", "parents") && residenceDuration >= 1) ||
+            (residenceType == "parents" && residenceDuration >= 3),
+            (vehicleType == "none" && yearsOfDrivingExperience >= 3) ||
+            (vehicleType in ("Car", "motorcycle") && yearsOfDrivingExperience >= 5)
+        )
+    then
+        person.setApproved(true);
+        person.setReason("Kredi başvurusu kabul edildi.");
+end
+
+rule "Kredi Verme Kuralı 2"
+    when
+        person : Person(
+            age >= 18,
+            age <= 30,
+            monthlyIncome >= 2500,
+            occupation == "student",
+            creditScore >= 600
+        )
+    then
+        person.setApproved(true);
+        person.setReason("Öğrenci kredisi başvurusu kabul edildi.");
+end
+
